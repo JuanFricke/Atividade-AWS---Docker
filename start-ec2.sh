@@ -8,7 +8,7 @@ sudo usermod -aG docker $USER
 
 # Clona o repositório
 git clone https://github.com/JuanFricke/Atividade-AWS---Docker.git
-cd seu_repositorio/wordpress
+cd Atividade-AWS---Docker/wordpress
 
 docker build -t wordpress_image .
 docker run -d --name wordpress_container -p 8080:80 wordpress_image
