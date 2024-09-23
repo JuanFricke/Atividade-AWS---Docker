@@ -1,0 +1,9 @@
+services:
+  wordpress:
+    build: .
+    ports:
+      - "8080:80"
+    env_file:
+      - .env  # Referência ao arquivo .env
+    volumes:
+      - ./wp-content:/var/www/html/wp-content
