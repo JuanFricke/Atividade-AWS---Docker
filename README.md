@@ -158,3 +158,48 @@ TCP
 ```
 
 ![alt text](photos/rds_config.png)
+
+
+## Auto Scaling Group
+
+![alt text](<auto_scaling/Imagem colada (1).png>) ![alt text](<auto_scaling/Imagem colada (2).png>) ![alt text](<auto_scaling/Imagem colada (3).png>) ![alt text](<auto_scaling/Imagem colada (4).png>) ![alt text](<auto_scaling/Imagem colada (5).png>) ![alt text](<auto_scaling/Imagem colada (6).png>) ![alt text](<auto_scaling/Imagem colada (7).png>) ![alt text](<auto_scaling/Imagem colada (8).png>)
+
+
+## IAM:
+![alt text](photos/iam_ec2.png)
+
+# Running the application
+
+![alt text](photos/final_steps/1.png)
+![alt text](photos/final_steps/2.png)
+![alt text](photos/final_steps/3.png)
+
+![alt text](photos/launch-template_network.png)
+
+### EC2 starting script can take up to 10 minutes to run, using a bastion host EC2 we can monitor the progress of the script and see when it is complete.
+
+![alt text](photos/final_steps/4.png)
+
+> Bastion:
+![alt text](photos/ec2_bastion_host.png)
+
+When conectet to this public instance we can enter the private ones created by the auto scaling group using SSH.
+
+
+![alt text](photos/final_steps/5.png)
+
+Using `htop` we can see the running processes and the memory usage of the EC2 instance.
+![alt text](photos/final_steps/6.png)
+
+
+> Explaning what the script does:
+ - Update the packages and install the dependencies.
+ - Install Docker.
+ - Install Docker Compose.
+ - Verify the Docker Compose installation.
+ - Create the .env file with the environment variables.
+ - Verify the connection to the database.
+ - Create the docker-compose.yml file.
+ - Start the Docker environment using Docker Compose.
+ - Output the logs to a file.
+
