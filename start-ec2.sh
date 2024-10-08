@@ -1,26 +1,35 @@
 #!/bin/bash
 
-# Sai do script se algum comando falhar
+# Saia do script se algum comando falhar
 set -e
 
+# Definir o arquivo de log
 LOG_FILE="script_log.txt"
 
+# Função para registrar mensagens no log e no terminal
 log() {
   echo "$(date +'%Y-%m-%d %H:%M:%S') - $1" | tee -a "$LOG_FILE"
 }
 
+# Atualiza e instala pacotes necessários
 log "Atualizando pacotes e instalando dependências..."
 sudo apt-get update -y
 sudo apt-get upgrade -y
-sudo apt-get install -y snapd git mysql-client
+sudo apt-get install -y snapd git mysql-client nfs-common
+
+# Instala AWS CLI
+log "Instalando AWS CLI..."
 sudo snap install aws-cli --classic
 
-# Instalando Docker
+# Instala Docker
 log "Instalando Docker..."
 sudo snap install docker
+
+# Certifique-se de que o Docker está rodando
+log "Esperando Docker iniciar..."
 sleep 10
 
-# Instalando Docker Compose
+# Instala o Docker Compose
 DOCKER_COMPOSE_VERSION="1.29.2"  # Versão do Docker Compose
 log "Instalando Docker Compose versão $DOCKER_COMPOSE_VERSION..."
 sudo curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -31,10 +40,10 @@ log "Verificando Docker Compose..."
 sudo docker-compose --version
 
 # Define as variáveis de ambiente do RDS
-DB_HOST="database-wordpress-mysql.xxxxxxx.rds.amazonaws.com"
-DB_USER="nome"
-DB_PASSWORD="senha"
-DB_NAME="wordpress"
+DB_HOST="database-wordpress-mysql.x.us-east-1.rds.amazonaws.com"
+DB_USER="x"
+DB_PASSWORD="x"
+DB_NAME="x"
 
 # Cria o arquivo .env para armazenar as variáveis de ambiente
 log "Criando arquivo .env com as variáveis de ambiente..."
@@ -59,7 +68,15 @@ else
     exit 1
 fi
 
-# Cria o arquivo docker-compose.yml
+# Configura o EFS
+EFS_DNS="fs-x.efs.us-east-1.amazonaws.com"
+MOUNT_POINT="/mnt/efs"
+
+log "Montando EFS em $MOUNT_POINT..."
+sudo mkdir -p $MOUNT_POINT
+sudo mount -t nfs4 -o nfsvers=4.1 $EFS_DNS:/ $MOUNT_POINT
+
+# Cria o arquivo docker-compose.yml diretamente no script
 log "Criando arquivo docker-compose.yml..."
 cat <<EOF > docker-compose.yml
 version: '3'
@@ -75,7 +92,7 @@ services:
       WORDPRESS_DB_PASSWORD: \${MYSQL_PWD}
       WORDPRESS_DB_NAME: \${DB_NAME}
     volumes:
-      - ./wp-content:/var/www/html/wp-content
+      - $MOUNT_POINT/wp-content:/var/www/html/wp-content
 EOF
 
 # Inicia o ambiente Docker com Docker Compose
@@ -83,4 +100,5 @@ log "Iniciando ambiente Docker..."
 sleep 10
 sudo docker-compose -f /docker-compose.yml up 2>&1 | tee /docker-compose.log
 
-log "O ambiente foi configurado com sucesso e o WordPress está rodando no Docker na porta 8080 e 80."
+# Exibe mensagem de sucesso
+log "O ambiente foi configurado com sucesso e o WordPress está rodando no Docker na porta 8080."
