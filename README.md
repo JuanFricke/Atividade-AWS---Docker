@@ -1,4 +1,17 @@
 # AWS - CONTAINERS
+
+
+  - [Overview](#overview)
+  - [Create a EC2 template](#create-a-ec2-template)
+    - [sg-wordpress-ec2](#sg-wordpress-ec2)
+  - [Create secure VPC network](#create-secure-vpc-network)
+  - [RDS](#rds)
+  - [Configuring EFS](#configuring-efs)
+    - [EFS Endpoint:](#efs-endpoint)
+  - [Auto Scaling Group](#auto-scaling-group)
+  - [IAM:](#iam)
+- [Running the application](#running-the-application)
+- [Working project](#working-project)
 ## Overview
 
 This document outlines the steps to deploy a scalable WordPress application on AWS using the following components:
@@ -19,7 +32,7 @@ The setup follows a classic three-tier architecture:
    - Load Balancer: Routes HTTP/HTTPS traffic to the EC2 instances.
 
 
-## 1. Create a EC2 template
+## Create a EC2 template
 
 - Go to EC2 console
 - Create a new template
