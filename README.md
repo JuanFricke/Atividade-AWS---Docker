@@ -143,6 +143,8 @@ log "O ambiente foi configurado com sucesso e o WordPress está rodando no Docke
 ### sg-wordpress-ec2
 ![alt text](photos/sg-ec2-inbound_roules.png)
 
+- SSH to private instances can only be accessed from the bastion host.
+- The bastion host is a public EC2 instance and SSH is open to my IP.
 
 
 
@@ -237,3 +239,8 @@ Using `htop` we can see the running processes and the memory usage of the EC2 in
 > Accessing the database via internet is impossible:
 ![alt text](photos/dbeaver.png)
 
+
+![alt text](photos/load_balancer.png)
+
+
+![alt text](photos/firefox.png)
